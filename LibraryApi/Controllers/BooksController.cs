@@ -1,5 +1,5 @@
 using LibraryApi.Models;
-using LibraryApi.Services;
+using LibraryApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryApi.Controllers;
@@ -8,9 +8,9 @@ namespace LibraryApi.Controllers;
 [Route("api/[controller]")]
 public class BooksController : ControllerBase
 {
-    private readonly BooksService _booksService;
+    private readonly BooksRepository _booksService;
 
-    public BooksController(BooksService booksService) =>
+    public BooksController(BooksRepository booksService) =>
         _booksService = booksService;
 
     [HttpGet]

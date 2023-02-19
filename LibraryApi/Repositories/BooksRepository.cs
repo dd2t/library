@@ -3,13 +3,13 @@ using LibraryApi.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace LibraryApi.Services;
+namespace LibraryApi.Repositories;
 
-public class BooksService
+public class BooksRepository
 {
     private readonly IMongoCollection<Book> _booksCollection;
 
-    public BooksService(
+    public BooksRepository(
         IOptions<BookStoreDatabaseSettings> bookStoreDatabaseSettings)
     {
         var mongoClient = new MongoClient(

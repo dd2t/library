@@ -1,5 +1,5 @@
 using LibraryApi.Settings;
-using LibraryApi.Services;
+using LibraryApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<BookStoreDatabaseSettings>(
     builder.Configuration.GetSection("BookStoreDatabase"));
 
-builder.Services.AddSingleton<BooksService>();
+builder.Services.AddSingleton<BooksRepository>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(
