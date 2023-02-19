@@ -21,44 +21,27 @@ public abstract class BaseRepository<T>
             databaseSettings.Value.DatabaseName);
     }
 
+    public async Task CreateAsync(T model) =>
+        await GetCollection().InsertOneAsync(model);
+
+    public async Task<List<T>> GetAsync() =>
+        await GetCollection().Find(_ => true).ToListAsync();
+
+    public async Task<T> GetAsync(string id) =>
+        await GetCollection().Find(x => x.Id == id).FirstOrDefaultAsync();
+
+    public async Task UpdateAsync(string id, T updatedModel) =>
+        await GetCollection().ReplaceOneAsync(x => x.Id == id, updatedModel);
+
+    public async Task DeleteAsync(string id) =>
+        await GetCollection().DeleteOneAsync(x => x.Id == id);
+
     private static string? GetCollectionName()
     {
         return (typeof(T).GetCustomAttributes(typeof(BsonCollectionAttribute), true).FirstOrDefault()
             as BsonCollectionAttribute)?.CollectionName;
     }
 
-    public async Task CreateAsync(T model)
-    {
-        var collectionName = GetCollectionName();
-        var collection = _database.GetCollection<T>(collectionName);
-        await collection.InsertOneAsync(model);
-    }
-
-    public async Task<List<T>> GetAsync()
-    {
-        var collectionName = GetCollectionName();
-        var collection = _database.GetCollection<T>(collectionName);
-        return await collection.Find(_ => true).ToListAsync();
-    }
-
-    public async Task<T> GetAsync(string id)
-    {
-        var collectionName = GetCollectionName();
-        var collection = _database.GetCollection<T>(collectionName);
-        return await collection.Find(x => x.Id == id).FirstOrDefaultAsync();
-    }
-
-    public async Task UpdateAsync(string id, T updatedModel)
-    {
-        var collectionName = GetCollectionName();
-        var collection = _database.GetCollection<T>(collectionName);
-        await collection.ReplaceOneAsync(x => x.Id == id, updatedModel);
-    }
-
-    public async Task DeleteAsync(string id)
-    {
-        var collectionName = GetCollectionName();
-        var collection = _database.GetCollection<T>(collectionName);
-        await collection.DeleteOneAsync(x => x.Id == id);
-    }
+    private IMongoCollection<T> GetCollection() =>
+        _database.GetCollection<T>(GetCollectionName());
 }
