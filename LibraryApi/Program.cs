@@ -1,11 +1,17 @@
 using LibraryApi.Settings;
 using LibraryApi.Repositories;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("DatabaseSettings"));
+
+builder.Services.AddSingleton<IMongoClient>(serviceProvider => {
+    var settings = builder.Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
+    return new MongoClient(settings?.ConnectionString);
+});
 
 builder.Services.AddSingleton<BooksRepository>();
 

@@ -12,14 +12,9 @@ public abstract class BaseRepository<T>
     private readonly IMongoDatabase _database;
 
     public BaseRepository(
-        IOptions<DatabaseSettings> databaseSettings)
-    {
-        var mongoClient = new MongoClient(
-            databaseSettings.Value.ConnectionString);
-
-        _database = mongoClient.GetDatabase(
-            databaseSettings.Value.DatabaseName);
-    }
+        IMongoClient mongoClient,
+        IOptions<DatabaseSettings> databaseSettings) =>
+            _database = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
 
     public async Task CreateAsync(T model) =>
         await GetCollection().InsertOneAsync(model);
