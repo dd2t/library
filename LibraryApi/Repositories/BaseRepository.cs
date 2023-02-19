@@ -12,7 +12,7 @@ public abstract class BaseRepository<T>
     private readonly IMongoDatabase _database;
 
     public BaseRepository(
-        IOptions<BookStoreDatabaseSettings> databaseSettings)
+        IOptions<DatabaseSettings> databaseSettings)
     {
         var mongoClient = new MongoClient(
             databaseSettings.Value.ConnectionString);

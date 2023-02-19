@@ -6,7 +6,7 @@ namespace LibraryApi.Repositories;
 
 public class BooksRepository : BaseRepository<Book>
 {
-    public BooksRepository(IOptions<BookStoreDatabaseSettings> databaseSettings) : base(databaseSettings)
+    public BooksRepository(IOptions<DatabaseSettings> databaseSettings) : base(databaseSettings)
     {
     }
 }
