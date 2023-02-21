@@ -1,23 +1,30 @@
 <template>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th v-for="field in fields" :key="field.key">
-            {{ field.label }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="book in books" :key="book.Id">
-          <td v-for="field in fields">
-            {{ book[field.key] }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </template>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th v-for="field in fields" :key="field.key">
+          {{ field.label }}
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="book in books" :key="book.Id">
+        <td v-for="field in fields">
+          {{ book[field.key] }}
+        </td>
+        <td>
+          <button class="btn btn-outline-primary table-button">Editar</button>
+          <button @click="deleteBook(book)" class="btn btn-outline-danger" table-button>Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</template>
   
-  <script setup>
+<script setup>
+  import { ref } from 'vue'
+
   const fields = [
     { key: "Id", label: "Id"},
     { key: "Name", label: "Título" },
@@ -25,7 +32,7 @@
     { key: "Category", label: "Categoria" },
     { key: "Price", label: "Preço" }
   ]
-  const books = [
+  let books = ref([
     {
       Name: "Clean Architecture",
       Price: 15,
@@ -61,6 +68,15 @@
       Author: "Bulls",
       Id: "63f28ebaa96935803e95fd41"
     }
-  ]
-  </script>
+  ])
+
+  const deleteBook = (book) => {
+    books.value = books.value.filter((x) => x.Id != book.Id)
+  }
+</script>
   
+<style scoped>
+  .table-button {
+    margin: 0 0.5rem 0 0.5rem;
+  }
+</style>
