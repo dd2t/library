@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import BooksTable from '../components/BooksTable.vue'
 import { useBooksStore } from '../store/BooksStore'
 
